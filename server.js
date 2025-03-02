@@ -4,7 +4,11 @@ const app = express();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// Диалог только через реплай
+// Настройка вебхука
+app.use(express.json());
+app.use(bot.webhookCallback('/')); // Путь для обработки вебхука
+
+// Логика бота
 bot.on('message', async (ctx) => {
   const reply = ctx.message.reply_to_message;
   if (reply && reply.from.username === ctx.botInfo.username) {
@@ -12,13 +16,11 @@ bot.on('message', async (ctx) => {
   }
 });
 
-// Реакция на ключевые слова
 bot.hears(['привет', 'старт'], (ctx) => {
   ctx.reply('Рад тебя видеть! Чем помочь?');
 });
 
-// Запуск сервера для Render
+// Запуск сервера
 app.listen(process.env.PORT || 3000, () => {
-  bot.launch();
-  console.log('Бот запущен!');
+  console.log('Бот запущен через вебхук!');
 });
