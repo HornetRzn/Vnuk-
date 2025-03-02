@@ -12,7 +12,15 @@ app.use(bot.webhookCallback('/')); // Путь для обработки веб�
 bot.on('message', async (ctx) => {
   const reply = ctx.message.reply_to_message;
   if (reply && reply.from.username === ctx.botInfo.username) {
-    await ctx.reply('Привет! Как твои дела? 😊');
+    // Получаем имя пользователя
+    const userName = ctx.from.first_name || 'друг';
+    // Получаем текст сообщения пользователя
+    const userMessage = ctx.message.text || '...';
+    // Формируем ответ
+    await ctx.replyWithMarkdown(
+      `Привет, *${userName}*! Ты написал: "${userMessage}".\n` + 
+      'Чем могу помочь? 😊'
+    );
   }
 });
 
