@@ -4,11 +4,11 @@ const app = express();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// Настройка вебхука
+// Вебхук
 app.use(express.json());
 app.use(bot.webhookCallback('/'));
 
-// Обработчик реплаев на сообщения бота
+// Обработка реплаев на сообщения бота
 bot.on('message', async (ctx) => {
   const reply = ctx.message.reply_to_message;
   if (reply && reply.from.username === ctx.botInfo.username) {
@@ -23,16 +23,19 @@ bot.on('message', async (ctx) => {
   }
 });
 
-// Обработчик ключевых слов в ЛЮБЫХ сообщениях
-bot.hears(['привет', 'старт', 'бот', 'помощь'], (ctx) => {
+// Обработка ключевых слов (регистронезависимо)
+bot.hears(/привет|старт|бот|помощь/i, (ctx) => {
   const userName = ctx.from.first_name || 'друг';
-  ctx.reply(`*${userName}*, я здесь! Просто ответь мне реплаем, если нужна помощь. 🚀`, 
-    { parse_mode: 'Markdown' }
+  ctx.reply(
+    `*${userName}*, я здесь! Просто ответь мне реплаем, если нужна помощь. 🚀`,
+    { 
+      parse_mode: 'Markdown',
+      reply_to_message_id: ctx.message.message_id 
+    }
   );
 });
 
 // Запуск сервера
 app.listen(process.env.PORT || 3000, () => {
-  bot.launch(); // Запуск Long Polling
-  console.log('Бот запущен через Long Polling!');
+  console.log('Бот запущен через вебхук!');
 });
