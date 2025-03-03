@@ -11,7 +11,7 @@ app.use(bot.webhookCallback('/'));
 // Обработка реплаев на сообщения бота
 bot.on('message', async (ctx) => {
   const reply = ctx.message.reply_to_message;
-  if (reply && reply.from.username === ctx.botInfo.username) {
+  if (reply && reply.from.id === ctx.botInfo.id) {
     const userName = ctx.from.first_name || 'друг';
     await ctx.reply(
       `Привет, *${userName}*! Чем помочь? 😊`,
