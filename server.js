@@ -33,5 +33,6 @@ bot.hears(['привет', 'старт', 'бот', 'помощь'], (ctx) => {
 
 // Запуск сервера
 app.listen(process.env.PORT || 3000, () => {
-  console.log('Бот запущен через вебхук!');
+  bot.launch(); // Запуск Long Polling
+  console.log('Бот запущен через Long Polling!');
 });
