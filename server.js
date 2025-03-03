@@ -8,8 +8,9 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 app.use(express.json());
 app.use(bot.webhookCallback('/'));
 
-// Обработка реплаев на сообщения бота
+// Обработка реплаев (проверка по ID бота)
 bot.on('message', async (ctx) => {
+  console.log('Сообщение:', ctx.message.text); // Логирование
   const reply = ctx.message.reply_to_message;
   if (reply && reply.from.id === ctx.botInfo.id) {
     const userName = ctx.from.first_name || 'друг';
@@ -23,11 +24,11 @@ bot.on('message', async (ctx) => {
   }
 });
 
-// Обработка ключевых слов (регистронезависимо)
-bot.hears(/привет|старт|бот|помощь/i, (ctx) => {
+// Обработка ключевых слов
+bot.hears(/привет|бот|помощь/i, (ctx) => {
   const userName = ctx.from.first_name || 'друг';
   ctx.reply(
-    `*${userName}*, я здесь! Просто ответь мне реплаем, если нужна помощь. 🚀`,
+    `*${userName}*, я здесь! 🚀`,
     { 
       parse_mode: 'Markdown',
       reply_to_message_id: ctx.message.message_id 
