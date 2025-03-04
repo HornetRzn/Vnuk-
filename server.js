@@ -1,12 +1,12 @@
 const { Telegraf } = require('telegraf');
-const express = require('express');
-const app = express();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-// Вебхук
-app.use(express.json());
-app.use(bot.webhookCallback('/'));
+// Получаем информацию о боте (чтобы ctx.botInfo был доступен)
+bot.telegram.getMe().then((botInfo) => {
+  bot.botInfo = botInfo;
+  console.log(`Бот @${botInfo.username} запущен!`);
+});
 
 // Обработка реплаев (проверка по ID бота)
 bot.on('message', async (ctx) => {
@@ -25,7 +25,7 @@ bot.on('message', async (ctx) => {
 });
 
 // Обработка ключевых слов
-bot.hears(/привет|бот|Жопа|салют|помощь/i, (ctx) => {
+bot.hears(/привет|бот|жопа|салют|помощь/i, (ctx) => {
   const userName = ctx.from.first_name || 'друг';
   ctx.reply(
     `*${userName}*, я здесь! 🚀`,
@@ -36,7 +36,9 @@ bot.hears(/привет|бот|Жопа|салют|помощь/i, (ctx) => {
   );
 });
 
-// Запуск сервера
-app.listen(process.env.PORT || 3000, () => {
-  console.log('Бот запущен через вебхук!');
-});
+// Запуск бота (БЕЗ вебхуков)
+bot.launch().then(() => console.log('Бот успешно запущен!'));
+
+// Обработка ошибок
+process.on("uncaughtException", (err) => console.error("Ошибка:", err));
+process.on("unhandledRejection", (err) => console.error("Ошибка:", err));
