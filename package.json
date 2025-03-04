@@ -1,12 +1,13 @@
 {
   "name": "telegram-chat-bot",
   "version": "1.0.0",
-  "description": "Простой бот для Telegram",
+  "description": "Telegram bot for group chat",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "telegraf": "^4.12.2"
+    "telegraf": "^4.12.2",
+    "express": "^4.17.1"
   }
 }
