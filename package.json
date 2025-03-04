@@ -1,3 +1,12 @@
-"scripts": {
-  "start": "node index.js"
+{
+  "name": "telegram-chat-bot",
+  "version": "1.0.0",
+  "description": "Простой бот для Telegram",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "telegraf": "^4.12.2"
+  }
 }
