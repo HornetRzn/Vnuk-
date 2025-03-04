@@ -1,4 +1,5 @@
 const { Telegraf } = require('telegraf');
+require('dotenv').config();  // Добавляем для работы с .env файлом
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
